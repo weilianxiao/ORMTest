@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="sqlSugarCore" Version="5.0.0.15" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ORM_Test_Common\ORM_Test_Common.csproj" />
+    <ProjectReference Include="..\ORM_Test_Model\ORM_Test_Model.csproj" />
+  </ItemGroup>
+
+</Project>

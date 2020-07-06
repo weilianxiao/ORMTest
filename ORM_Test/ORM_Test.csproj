@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySql.Data" Version="8.0.20" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
+    <PackageReference Include="Z.EntityFramework.Extensions.EFCore" Version="3.0.79" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ORM_Test_Common\ORM_Test_Common.csproj" />
+    <ProjectReference Include="..\ORM_Test_Model\ORM_Test_Model.csproj" />
+    <ProjectReference Include="..\ORM_Test_Repository_EFCore\ORM_Test_Repository_EFCore.csproj" />
+    <ProjectReference Include="..\ORM_Test_Repository_FreeSQL\ORM_Test_Repository_FreeSQL.csproj" />
+    <ProjectReference Include="..\ORM_Test_Repository_SqlSugar\ORM_Test_Repository_SqlSugar.csproj" />
+  </ItemGroup>
+
+</Project>
