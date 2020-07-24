@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
+using ORM_Test.IWorker;
 using ORM_Test_Common;
 using ORM_Test_Model;
 using ORM_Test_Repository_EFCore;
@@ -19,7 +20,10 @@ namespace ORM_Test
         static void Main(string[] args)
         {
             //InsertTest();
-            QueryTest();
+            //QueryTest();
+
+
+            TestMysql();
         }
 
         /// <summary>
@@ -1174,6 +1178,56 @@ namespace ORM_Test
             Console.WriteLine($"ADO.NET查询100000条数据耗时:{stopwatch.Elapsed.TotalSeconds}");
             Console.WriteLine("---------------------------------------------------------------------------------------");
             #endregion
+        }
+
+        static void TestMysql()
+        {
+            var rdmChinese = new RandomChinese();
+            var idworker = new IdWorker(1);
+
+            for (int j = 1; j <= 1000; j++)
+            {
+                var userList100000 = new List<User>();
+
+                for (int i = 1; i <= 100000; i++)
+                {
+                    userList100000.Add(new User
+                    {
+                        Username = $"Test{j*i}",
+                        Password = "123456",
+                        Address = rdmChinese.GetRandomChinese(new Random().Next(50, 100)),
+                        Age = new Random().Next(20,50),
+                        BrithDay = DateTime.Now,
+                        CreateId = idworker.nextId(),
+                        CreateTime = DateTime.Now,
+                        Email = $"{new Random().Next(11111111, 999999999)}@qq.com",
+                        IsDelete = 0,
+                        Sex = 1,
+                        UpdateTime = DateTime.Now
+                    });
+                }
+                var stopwatch = new Stopwatch();
+
+                Console.WriteLine("ADO.NET Start");
+
+                var mutiSql100000 = new List<string>();
+                foreach (var user100000 in userList100000)
+                {
+                    mutiSql100000.Add($"('{user100000.Username}', '{user100000.Password}', '{user100000.Email}', '{user100000.Address}',{user100000.Age}, {user100000.Sex}, '{user100000.BrithDay}', '{user100000.CreateTime}', '{user100000.UpdateTime}',{user100000.CreateId}, {user100000.IsDelete})");
+                }
+                stopwatch.Restart();
+                using (var conn = new MySqlConnection("Database=orm_test;Data Source=localhost;Port=3306;User Id=root;Password=123456w.;Charset=utf8;"))
+                {
+                    conn.Open();
+                    var sql = $"INSERT INTO `user`(`Username`, `Password`, `Email`, `Address`, `Age`, `Sex`, `BrithDay`, `CreateTime`, `UpdateTime`, `CreateId`, `IsDelete`) VALUES" + string.Join(",", mutiSql100000);
+                    var sqlcmd = new MySqlCommand(sql, conn);
+                    sqlcmd.ExecuteNonQuery();
+                }
+                stopwatch.Stop();
+                Console.WriteLine("ADO.NET End");
+                Console.WriteLine($"ADO.NET插入100000条数据条数据耗时:{stopwatch.Elapsed.TotalSeconds}");
+                Console.WriteLine("---------------------------------------------------------------------------------------");
+            }
         }
     }
 }

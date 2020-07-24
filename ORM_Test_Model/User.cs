@@ -17,7 +17,7 @@ namespace ORM_Test_Model
         public DateTime BrithDay { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime UpdateTime { get; set; }
-        public int CreateId { get; set; }
+        public long CreateId { get; set; }
         public short IsDelete { get; set; }
     }
 }
